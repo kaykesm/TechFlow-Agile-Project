@@ -15,4 +15,9 @@ class GerenciadorTarefas:
             status = "✔️" if tarefa["concluida"] else "❌"
             lista.append(f"{i+1}. {tarefa['descricao']} {status}")
         return "\n".join(lista)
+        
+# Testando o CI no GitHub
+
+test: rodando CI novamente
+
 
