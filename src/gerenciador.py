@@ -1,43 +1,18 @@
-from typing import List, Dict
+class GerenciadorTarefas:
+    def __init__(self):
+        self.tarefas = []
 
-tarefas: List[Dict] = []
+    def adicionar_tarefa(self, descricao):
+        self.tarefas.append({"descricao": descricao, "concluida": False})
 
-def reset_tarefas():
-    """Zera a lista - útil para testes."""
-    global tarefas
-    tarefas = []
+    def concluir_tarefa(self, indice):
+        if 0 <= indice < len(self.tarefas):
+            self.tarefas[indice]["concluida"] = True
 
-def criar_tarefa(nome: str, prioridade: int = 3) -> Dict:
-    """Cria uma tarefa com nome, prioridade e status inicial 'A Fazer'."""
-    tarefa = {
-        "id": len(tarefas),
-        "nome": nome,
-        "prioridade": prioridade,
-        "status": "A Fazer"
-    }
-    tarefas.append(tarefa)
-    return tarefa
+    def listar_tarefas(self):
+        lista = []
+        for i, tarefa in enumerate(self.tarefas):
+            status = "✔️" if tarefa["concluida"] else "❌"
+            lista.append(f"{i+1}. {tarefa['descricao']} {status}")
+        return "\n".join(lista)
 
-def listar_tarefas() -> List[Dict]:
-    """Retorna a lista de tarefas."""
-    return tarefas.copy()
-
-def atualizar_status(task_id: int, novo_status: str) -> bool:
-    """Atualiza status de uma tarefa. Retorna True se atualizado, False se não encontrado."""
-    for t in tarefas:
-        if t["id"] == task_id:
-            t["status"] = novo_status
-            return True
-    return False
-
-def excluir_tarefa(task_id: int) -> bool:
-    """Exclui a tarefa com id dado. Retorna True se excluiu, False se não encontrou."""
-    global tarefas
-    nova = [t for t in tarefas if t["id"] != task_id]
-    if len(nova) == len(tarefas):
-        return False
-    # reindexa ids
-    for idx, t in enumerate(nova):
-        t["id"] = idx
-    tarefas = nova
-    return True
